@@ -80,9 +80,9 @@ function renderProductBasket(productId) {
       </div>
       <div>${basket[productId].price}</div>
       <div>
-        <span class="productTotalRow">${
-          (basket[productId].count * basket[productId].price).toFixed(2);
-        }</span>
+        <span class="productTotalRow">${(
+          basket[productId].count * basket[productId].price
+        ).toFixed(2)}</span>
       </div>
     </div>
   `;
