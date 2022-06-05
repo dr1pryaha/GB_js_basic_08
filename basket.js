@@ -7,7 +7,7 @@ const basketTotalValueEl = document.querySelector(".basketTotalValue");
 const basketTotalEl = document.querySelector(".basketTotal");
 const featuredItemsEl = document.querySelector(".featuredItems");
 const featuredItemEl = document.querySelector(".featuredItem");
-const list = featuredItemsEl.childNodes;
+const list = featuredItemsEl.children;
 
 const basket = {};
 
@@ -17,18 +17,17 @@ cartIconWrapEl.addEventListener("click", event => {
   }
 });
 
-for (const el of list) {
-  el.addEventListener("click", event => {
-    if (!event.target.closest(".addToCart")) {
-      return;
-    }
-    const id = +event.currentTarget.closest(".featuredItem").dataset.id;
-    const name = event.currentTarget.closest(".featuredItem").dataset.name;
-    const price = +event.currentTarget.closest(".featuredItem").dataset.price;
-    addToCart(id, name, price);
-    renderBasket(id);
-  });
-}
+featuredItemsEl.addEventListener("click", event => {
+  if (!event.target.closest(".addToCart")) {
+    return;
+  }
+  const productContainer = event.target.closest(".featuredItem");
+  const id = +productContainer.dataset.id;
+  const name = productContainer.dataset.name;
+  const price = +productContainer.dataset.price;
+  addToCart(id, name, price);
+  renderBasket(id);
+});
 
 function addToCart(id, name, price) {
   if (!(id in basket)) {
@@ -41,7 +40,7 @@ function addToCart(id, name, price) {
   }
   basket[id].count++;
   basketCounterEl.textContent = getTotalCount().toString();
-  basketTotalValueEl.textContent = getTotalprice().toFixed();
+  basketTotalValueEl.textContent = getTotalprice().toFixed(2);
 }
 
 function getTotalCount() {
@@ -67,8 +66,9 @@ function renderBasket(id) {
   }
 
   basketRowEl.querySelector(".productCount").textContent = basket[id].count;
-  basketRowEl.querySelector(".productTotalRow").textContent =
-    basket[id].count * basket[id].price;
+  basketRowEl.querySelector(".productTotalRow").textContent = (
+    basket[id].count * basket[id].price
+  ).toFixed(2);
 }
 
 function renderProductBasket(productId) {
@@ -81,7 +81,7 @@ function renderProductBasket(productId) {
       <div>${basket[productId].price}</div>
       <div>
         <span class="productTotalRow">${
-          basket[productId].count * basket[productId].price
+          (basket[productId].count * basket[productId].price).toFixed(2);
         }</span>
       </div>
     </div>
